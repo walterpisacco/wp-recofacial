@@ -19,14 +19,6 @@ url = configuracion.pathModelos
 wget.download(url, 'models/faces.pickle')
 
 video = cv2.VideoCapture(int(configuracion.camara))
-#video = CamGear(source="https://www.youtube.com/watch?v=7SZuhEfjEZk", stream_mode = True, logging=True).start()
-#video = cv2.VideoCapture("rtsp://admin:0000@192.168.0.51:80/live/h264/ch01")
-#video = cv2.VideoCapture("rtsp://admin:Global*3522@192.168.0.108:554/cam/realmonitor?channel=1&subtype=1")
-
-#******* SON LO MISMO PARA KIKVISION ********
-#video = cv2.VideoCapture("rtsp://admin:admin1234@192.168.0.52:554/h264/ch01/sub/av_stream")
-#video = cv2.VideoCapture("rtsp://admin:admin1234@192.168.0.52:554/Streaming/Channels/902")
-#*****************************
 
 app.ban = False #Bandera Para que cargue una sola Vez el Modelo
 app.detector = cv2.CascadeClassifier('models/haarcascade_frontalface_alt.xml')
