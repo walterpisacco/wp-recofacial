@@ -1,0 +1,3 @@
+0 Deteccion
+1 No Deteccion
+
