@@ -1,5 +1,9 @@
 class config():
 	def __init__(self):
-		self.servidor = 'desarrollo.aktis.com.ar'
-		self.pathModelos = 'https://desarrollo.aktis.com.ar/01python/dsv/ai/conv/faces.pickle'
-		self.camara = '0'	
+		self.servidor = ''
+		self.base = ''
+		self.usuario = ''
+		self.password = ''
+		self.pathModelos = 'ai/conv/'
+		self.urlApi = 'http://localhost:4001/'
+		

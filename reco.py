@@ -15,10 +15,10 @@ configuracion = config()
 
 import wget
 
-url = configuracion.pathModelos
+url = configuracion.pathDescarga
 wget.download(url, 'models/faces.pickle')
 
-video = cv2.VideoCapture(int(configuracion.camara))
+video = cv2.VideoCapture(int(configuracion.camara1))
 
 app.ban = False #Bandera Para que cargue una sola Vez el Modelo
 app.detector = cv2.CascadeClassifier('models/haarcascade_frontalface_alt.xml')
