@@ -7,16 +7,43 @@ from gtts import gTTS
 from flask import Flask, render_template, json, request
 from datetime import datetime
 import wget
+#pip3 install flask-mysql
+from flaskext.mysql import MySQL
 
 app = Flask(__name__ , template_folder= "modulos")
 app.secret_key = b'_5#y2L"F4Q8z\n\xec]/'
 
-wget.download('https://desarrollo.aktis.com.ar/01python/dsv/config.py', 'config.py')
+mysql = MySQL()
 
 from config import config
 configuracion = config()
 
-import wget
+# MySQL configurations
+app.config['MYSQL_DATABASE_USER'] = configuracion.usuario
+app.config['MYSQL_DATABASE_PASSWORD'] = configuracion.password
+app.config['MYSQL_DATABASE_DB'] = configuracion.base
+app.config['MYSQL_DATABASE_HOST'] = configuracion.servidor
+
+mysql.init_app(app)
+
+#busco el cliente de una sesion de usuario de la plataforma conectada desde esta ip
+conn = mysql.connect()
+cursor = conn.cursor()
+
+query = "select clave,valor from sas_admin.configs where id_client = 1"
+cursor.execute(query)
+conn.commit()
+results = cursor.fetchall()
+if len(results) > 0:
+    for row in results:
+        if row[0] == 'desde':
+            desde = row[1]
+
+        if row[0] == 'hasta':
+            hasta = row[1]            
+        
+        desde = datetime.strptime(desde, "%Y-%m-%d %H:%M")
+        hasta = datetime.strptime(hasta, "%Y-%m-%d %H:%M")
 
 url = configuracion.pathDescarga
 wget.download(url, 'models/faces.pickle')
@@ -27,8 +54,6 @@ app.ban = False #Bandera Para que cargue una sola Vez el Modelo
 app.detector = cv2.CascadeClassifier('models/haarcascade_frontalface_alt.xml')
 app.data = pickle.loads(open("models/faces.pickle", "rb").read())
 
-desde = datetime.strptime(configuracion.desde, "%Y-%m-%d %H:%M")
-hasta = datetime.strptime(configuracion.hasta, "%Y-%m-%d %H:%M")
 
 while True:
     success, image = video.read()
@@ -36,7 +61,6 @@ while True:
         now = datetime.now()
         if desde <= now <= hasta:
             print ("procesa")
-
                 #image = imutils.resize(image, width=720)
             gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY) #convert to grey scale
 
@@ -71,7 +95,8 @@ while True:
                         app.ban = True
                 else:
                     app.ban = False
-
+        else:
+            print ("NO procesa")
      
     cv2.imshow('image', image)
     if cv2.waitKey(1) == ord('q'):
