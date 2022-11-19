@@ -42,8 +42,8 @@ if len(results) > 0:
         if row[0] == 'hasta':
             hasta = row[1]            
         
-        desde = datetime.strptime(desde, "%Y-%m-%d %H:%M")
-        hasta = datetime.strptime(hasta, "%Y-%m-%d %H:%M")
+desde = datetime.strptime(desde, "%Y-%m-%d %H:%M")
+hasta = datetime.strptime(hasta, "%Y-%m-%d %H:%M")
 
 url = configuracion.pathDescarga
 wget.download(url, 'models/faces.pickle')
